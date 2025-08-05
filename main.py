@@ -48,7 +48,7 @@ if st.session_state.chat_stage == "collect_name":
         st.session_state.user_name = name
         greet = random.choice(greetings)
         st.session_state.chat_history.append({"role": "user", "message": name})
-        st.session_state.chat_history.append({"role": "assistant", "message": f"{greet}, {name}! How old are you?"})
+        st.session_state.chat_history.append({"role": "assistant", "message": f"{greet}, {name}!"})
         st.session_state.chat_stage = "collect_age"
         st.rerun()
 
