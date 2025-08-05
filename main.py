@@ -77,18 +77,19 @@ elif st.session_state.chat_stage == "collect_education":
     if st.button("✅ Continue"):
         st.session_state.education_level = level
 
-        # Add intro message to chat history
+        # Add intro message
         st.session_state.chat_history.append({
             "role": "assistant",
             "message": f"Awesome! You’re in **{level}**. Ask me a question!"
         })
 
-        # Setup Gemini chat session with context injected as first user message
+        # Initialize Gemini chat session with context
         personality_prompt = (
             f"You are a friendly chatbot named EnergiBot who teaches energy-related topics to kids and young adults. "
             f"The user’s name is {st.session_state.user_name}, they are {st.session_state.user_age} years old, "
             f"and they are in {level}. Use simple, engaging, and age-appropriate language."
         )
+
         st.session_state.chat_session = model.start_chat(history=[
             {"role": "user", "parts": [personality_prompt]}
         ])
@@ -106,18 +107,16 @@ elif st.session_state.chat_stage == "chatting":
             "message": prompt
         })
 
-        # Stream assistant response
+        # Get assistant response (no streaming)
+        response = st.session_state.chat_session.send_message(prompt)
+        reply_text = response.text
+
         with st.chat_message("assistant"):
-            response_placeholder = st.empty()
-            full_response = f"🤖 **EnergiBot**\n\n"
-            for chunk in st.session_state.chat_session.send_message(prompt, stream=True):
-                part = getattr(chunk, "text", "")
-                full_response += part
-                response_placeholder.markdown(full_response)
+            st.markdown(f"🤖 **EnergiBot**\n\n{reply_text}")
 
         st.session_state.chat_history.append({
             "role": "assistant",
-            "message": full_response
+            "message": reply_text
         })
 
         st.rerun()
