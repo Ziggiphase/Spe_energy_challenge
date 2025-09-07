@@ -83,7 +83,7 @@ elif st.session_state.chat_stage == "collect_education":
 
         # Inject memory/personality into Gemini
         memory = (
-            f"You are a friendly chatbot named EnergiBot. You teach energy topics to kids. "
+            f"You are a friendly chatbot named EnergiBot. You teach energy topics to users based on age and education level. "
             f"The user is named {st.session_state.user_name}, aged {st.session_state.user_age}, "
             f"and is in {level} level. Respond in a fun and understandable way for this audience."
         )
